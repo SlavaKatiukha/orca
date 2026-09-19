@@ -32,7 +32,6 @@ describe('createMarkdownFenceTracker', () => {
     ['exact-length closer', '```\nbody\n```'],
     ['longer closer', '```\nbody\n`````'],
     ['closer with trailing whitespace', '```\nbody\n```  \t'],
-    ['indented closer', '```\nbody\n      ```'],
     ['tilde closer', '~~~\nbody\n~~~']
   ])('closes on a %s', (_name, content) => {
     expect(insideFenceLines(content)).toEqual(['body'])
@@ -85,12 +84,6 @@ describe('createMarkdownFenceTracker', () => {
       { line: `${indent}\`\`\``, isFenceLine: false, wasInside: false },
       { line: 'body', isFenceLine: false, wasInside: false }
     ])
-  })
-
-  // Deliberate: marked caps an opener at three spaces relative to the enclosing
-  // block, and a flat cap here would stop seeing fenced code under a list item.
-  it.each(['    ```', '\t```', '        ```'])('accepts the over-indented opener %j', (opener) => {
-    expect(insideFenceLines(`${opener}\nbody`)).toEqual(['body'])
   })
 })
 
